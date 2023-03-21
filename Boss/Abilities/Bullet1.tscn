@@ -1,12 +1,62 @@
-[gd_scene load_steps=3 format=3 uid="uid://ceovjy16yagb7"]
+[gd_scene load_steps=9 format=3 uid="uid://ceovjy16yagb7"]
 
 [ext_resource type="Script" path="res://Boss/Abilities/Bullet1.gd" id="1_mcwmo"]
+[ext_resource type="Texture2D" uid="uid://bb422jcqihcmn" path="res://Assets/All_Fire_Bullet_Pixel_16x16.png" id="2_v1c6g"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_mxwug"]
-radius = 49.0918
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k28sx"]
+size = Vector2(94, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3c5p0"]
+atlas = ExtResource("2_v1c6g")
+region = Rect2(256, 176, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xxvh"]
+atlas = ExtResource("2_v1c6g")
+region = Rect2(272, 176, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ma882"]
+atlas = ExtResource("2_v1c6g")
+region = Rect2(288, 176, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_afic2"]
+atlas = ExtResource("2_v1c6g")
+region = Rect2(304, 176, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pal55"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3c5p0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xxvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ma882")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_afic2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Bullet1" type="Area2D"]
+collision_layer = 0
 script = ExtResource("1_mcwmo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_mxwug")
+shape = SubResource("RectangleShape2D_k28sx")
+
+[node name="ExistTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(5.8993, 5.8993)
+sprite_frames = SubResource("SpriteFrames_pal55")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="ExistTimer" to="." method="_on_exist_timer_timeout"]

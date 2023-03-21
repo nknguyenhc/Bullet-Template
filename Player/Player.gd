@@ -22,4 +22,5 @@ func take_damage(damage):
 func shoot_in_mouse_direction():
 	var bullet = Bullet.instantiate()
 	bullet.direction = (get_global_mouse_position() - position).normalized()
+	bullet.position = position
 	get_parent().add_child(bullet)

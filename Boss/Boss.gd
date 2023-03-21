@@ -24,6 +24,7 @@ func take_damage(damage):
 func shoot_at_player():
 	var bullet = Bullet1.instantiate()
 	bullet.direction = (player.position - position).normalized()
+	bullet.position = position
 	get_parent().add_child(bullet)
 
 
@@ -34,16 +35,21 @@ func perpendicular_image(vector, parallel):
 
 
 func shoot_preemptive():
+	if player.velocity == Vector2.ZERO:
+		shoot_at_player()
+		return
 	var bullet = Bullet1.instantiate()
 	var bullet_speed = bullet.SPEED
 	var perpendicular_image = perpendicular_image(player.velocity, position - player.position)
 	var parallel_length = sqrt(pow(bullet_speed, 2) - pow(perpendicular_image.length(), 2))
 	var parallel_image = parallel_length * (player.position - position).normalized()
 	bullet.direction = (parallel_image + perpendicular_image).normalized()
+	bullet.position = position
 	get_parent().add_child(bullet)
 
 
 func shoot_homing():
 	var bullet = Bullet2.instantiate()
 	bullet.target = player
+	bullet.position = position
 	get_parent().add_child(bullet)
