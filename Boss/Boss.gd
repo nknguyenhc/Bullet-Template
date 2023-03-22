@@ -11,6 +11,7 @@ var health = MAX_HEALTH
 
 func _ready():
 	player = get_parent().get_node("Player")
+	$AnimatedSprite2D.play()
 
 
 func _physics_process(delta):
@@ -53,3 +54,26 @@ func shoot_homing():
 	bullet.target = player
 	bullet.position = position
 	get_parent().add_child(bullet)
+
+
+func _on_start_timer_timeout():
+	$HomingBulletTimer.start()
+
+
+func _on_homing_bullet_timer_timeout():
+	shoot_homing()
+	$AnimatedSprite2D.animation = "shoot"
+	$AnimatedSprite2D.play()
+
+
+func _on_straight_bullet_timer_timeout():
+	shoot_at_player()
+	shoot_preemptive()
+	$AnimatedSprite2D.animation = "shoot"
+	$AnimatedSprite2D.play()
+
+
+func _on_animated_sprite_2d_animation_finished():
+	if $AnimatedSprite2D.animation == "shoot":
+		$AnimatedSprite2D.animation = "idle"
+		$AnimatedSprite2D.play()

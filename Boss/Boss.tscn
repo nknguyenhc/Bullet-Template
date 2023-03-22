@@ -1,9 +1,51 @@
-[gd_scene load_steps=3 format=3 uid="uid://tnr70tppw3bv"]
+[gd_scene load_steps=9 format=3 uid="uid://tnr70tppw3bv"]
 
 [ext_resource type="Script" path="res://Boss/Boss.gd" id="1_cuqmc"]
+[ext_resource type="Texture2D" uid="uid://bksa22qhmvwib" path="res://Assets/Aekashics Librarium MV Format Animated Battlers/RPG Maker MV format Animated Sideview Battlers/Tiamat/Tiamat.png" id="2_nf02l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_177ti"]
-size = Vector2(200, 200)
+size = Vector2(200, 116)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vowul"]
+atlas = ExtResource("2_nf02l")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mc58a"]
+atlas = ExtResource("2_nf02l")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j82wx"]
+atlas = ExtResource("2_nf02l")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4ofg"]
+atlas = ExtResource("2_nf02l")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ybwf2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vowul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mc58a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j82wx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4ofg")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 3.0
+}]
 
 [node name="Boss" type="CharacterBody2D"]
 collision_layer = 2
@@ -12,3 +54,25 @@ script = ExtResource("1_cuqmc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_177ti")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(3, -54)
+scale = Vector2(0.434236, 0.434236)
+sprite_frames = SubResource("SpriteFrames_ybwf2")
+animation = &"shoot"
+
+[node name="HomingBulletTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="StraightBulletTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="StartTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="timeout" from="HomingBulletTimer" to="." method="_on_homing_bullet_timer_timeout"]
+[connection signal="timeout" from="StraightBulletTimer" to="." method="_on_straight_bullet_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]

@@ -1,9 +1,39 @@
-[gd_scene load_steps=3 format=3 uid="uid://dpus28o3tiphs"]
+[gd_scene load_steps=8 format=3 uid="uid://dpus28o3tiphs"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_l3xj7"]
+[ext_resource type="Texture2D" uid="uid://yp7aejqthhgh" path="res://Assets/Aekashics Librarium MV Format Animated Battlers/RPG Maker MV format Animated Sideview Battlers/Jupiter/Jupiter.png" id="2_hykju"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_px7kv"]
 size = Vector2(196, 196)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brnnc"]
+atlas = ExtResource("2_hykju")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov3bm"]
+atlas = ExtResource("2_hykju")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ou6xg"]
+atlas = ExtResource("2_hykju")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ueyxf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_brnnc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ov3bm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ou6xg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 4
@@ -14,3 +44,14 @@ shape = SubResource("RectangleShape2D_px7kv")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)
+
+[node name="BulletTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -62)
+scale = Vector2(0.624037, 0.624037)
+sprite_frames = SubResource("SpriteFrames_ueyxf")
+
+[connection signal="timeout" from="BulletTimer" to="." method="_on_bullet_timer_timeout"]

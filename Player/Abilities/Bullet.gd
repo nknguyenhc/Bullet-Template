@@ -10,6 +10,7 @@ const DAMAGE = 5
 
 func _ready():
 	velocity = direction * SPEED
+	$AnimatedSprite2D.play()
 
 
 func _physics_process(delta):

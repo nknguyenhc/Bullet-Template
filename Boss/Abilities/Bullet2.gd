@@ -9,6 +9,10 @@ var direction
 const DAMAGE = 5
 
 
+func _ready():
+	$AnimatedSprite2D.play()
+
+
 func _physics_process(delta):
 	if homing:
 		direction = (target.position - position).normalized()

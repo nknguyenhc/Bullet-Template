@@ -1,9 +1,46 @@
-[gd_scene load_steps=3 format=3 uid="uid://q8sqk3vaddsa"]
+[gd_scene load_steps=9 format=3 uid="uid://q8sqk3vaddsa"]
 
 [ext_resource type="Script" path="res://Player/Abilities/Bullet.gd" id="1_lce4j"]
+[ext_resource type="Texture2D" uid="uid://bb422jcqihcmn" path="res://Assets/All_Fire_Bullet_Pixel_16x16.png" id="2_5pjqj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exkwh"]
 size = Vector2(98, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_io5f8"]
+atlas = ExtResource("2_5pjqj")
+region = Rect2(496, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dukh"]
+atlas = ExtResource("2_5pjqj")
+region = Rect2(512, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b7g7r"]
+atlas = ExtResource("2_5pjqj")
+region = Rect2(528, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fc74v"]
+atlas = ExtResource("2_5pjqj")
+region = Rect2(544, 112, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mre2b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_io5f8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4dukh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b7g7r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fc74v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Bullet" type="Area2D"]
 collision_layer = 0
@@ -14,6 +51,10 @@ script = ExtResource("1_lce4j")
 shape = SubResource("RectangleShape2D_exkwh")
 
 [node name="ExistTimer" type="Timer" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(6.125, 6.125)
+sprite_frames = SubResource("SpriteFrames_mre2b")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="ExistTimer" to="." method="_on_exist_timer_timeout"]

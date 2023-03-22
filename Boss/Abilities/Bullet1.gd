@@ -11,6 +11,7 @@ const DAMAGE = 5
 func _ready():
 	velocity = direction * SPEED
 	rotation = Vector2.RIGHT.angle_to(direction)
+	$AnimatedSprite2D.play()
 
 
 func _physics_process(delta):
