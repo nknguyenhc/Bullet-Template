@@ -8,6 +8,11 @@ var player
 const MAX_HEALTH = 100
 var health = MAX_HEALTH
 
+var damage_count = 0
+const DAMAGE_MAX_COUNT = 5
+
+var invincible = false
+
 
 func _ready():
 	player = get_parent().get_node("Player")
@@ -19,7 +24,14 @@ func _physics_process(delta):
 
 
 func take_damage(damage):
-	health = max(health - damage, 0)
+	if not invincible:
+		health = max(health - damage, 0)
+		damage_count += 1 
+		if damage_count == DAMAGE_MAX_COUNT:
+			damage_count = 0
+			$InvincibilityTimer.start()
+			$AnimationPlayer.play("taking_damage")
+			invincible = true
 
 
 func shoot_at_player():
@@ -77,3 +89,8 @@ func _on_animated_sprite_2d_animation_finished():
 	if $AnimatedSprite2D.animation == "shoot":
 		$AnimatedSprite2D.animation = "idle"
 		$AnimatedSprite2D.play()
+
+
+func _on_invincibility_timer_timeout():
+	$AnimationPlayer.stop()
+	invincible = false

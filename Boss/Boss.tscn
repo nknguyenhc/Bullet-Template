@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://tnr70tppw3bv"]
+[gd_scene load_steps=11 format=3 uid="uid://tnr70tppw3bv"]
 
 [ext_resource type="Script" path="res://Boss/Boss.gd" id="1_cuqmc"]
 [ext_resource type="Texture2D" uid="uid://bksa22qhmvwib" path="res://Assets/Aekashics Librarium MV Format Animated Battlers/RPG Maker MV format Animated Sideview Battlers/Tiamat/Tiamat.png" id="2_nf02l"]
@@ -47,6 +47,28 @@ animations = [{
 "speed": 3.0
 }]
 
+[sub_resource type="Animation" id="Animation_qhhl3"]
+resource_name = "taking_damage"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(1, 1, 1, 1), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n1m6l"]
+_data = {
+"taking_damage": SubResource("Animation_qhhl3")
+}
+
 [node name="Boss" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 4
@@ -72,7 +94,17 @@ autostart = true
 one_shot = true
 autostart = true
 
+[node name="InvincibilityTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_n1m6l")
+}
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="HomingBulletTimer" to="." method="_on_homing_bullet_timer_timeout"]
 [connection signal="timeout" from="StraightBulletTimer" to="." method="_on_straight_bullet_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]

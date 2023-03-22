@@ -5,7 +5,7 @@ const SPEED = 20
 var direction
 var velocity
 
-const DAMAGE = 5
+const DAMAGE = 2
 
 
 func _ready():
