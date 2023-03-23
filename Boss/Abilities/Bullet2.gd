@@ -6,7 +6,7 @@ var target
 var homing = true
 var direction
 
-const DAMAGE = 5
+const DAMAGE = 3
 
 
 func _ready():

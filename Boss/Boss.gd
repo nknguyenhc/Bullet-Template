@@ -93,6 +93,17 @@ func shoot_all_directions():
 		bullet.direction = Vector2(cos(angle), sin(angle))
 		bullet.position = position
 		get_parent().add_child(bullet)
+		angle += PI / 8
+
+
+const DISTANCE_FROM = 3000
+func shoot_from_all_directions():
+	var angle = 0
+	while angle < 2 * PI:
+		var bullet = Bullet1.instantiate()
+		bullet.direction = Vector2(cos(angle), sin(angle))
+		bullet.position = player.position - DISTANCE_FROM * bullet.direction
+		get_parent().add_child(bullet)
 		angle += PI / 4
 
 
@@ -126,3 +137,4 @@ func _on_invincibility_timer_timeout():
 
 func _on_all_direction_timer_timeout():
 	shoot_all_directions()
+	shoot_from_all_directions()
