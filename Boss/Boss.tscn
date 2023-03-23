@@ -103,8 +103,13 @@ libraries = {
 "": SubResource("AnimationLibrary_n1m6l")
 }
 
+[node name="AllDirectionTimer" type="Timer" parent="."]
+wait_time = 7.0
+autostart = true
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="HomingBulletTimer" to="." method="_on_homing_bullet_timer_timeout"]
 [connection signal="timeout" from="StraightBulletTimer" to="." method="_on_straight_bullet_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="AllDirectionTimer" to="." method="_on_all_direction_timer_timeout"]

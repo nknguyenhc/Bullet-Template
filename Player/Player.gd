@@ -1,7 +1,12 @@
 extends CharacterBody2D
 
 
-const SPEED = 10 
+const LOWER_SPEED = 10
+const UPPER_SPEED = 30
+var speed = LOWER_SPEED
+var dashing = false
+var dash_enabled = true
+var direction
 
 const Bullet = preload("res://Player/Abilities/Bullet.tscn")
 
@@ -12,9 +17,14 @@ var bullet_enabled = true
 
 
 func _physics_process(delta):
-	velocity = Vector2(Input.get_action_strength("right") - Input.get_action_strength("left"),
-	Input.get_action_strength("down") - Input.get_action_strength("up")).normalized() * SPEED
+	if not dashing:
+		direction = Vector2(Input.get_action_strength("right") - Input.get_action_strength("left"),
+		Input.get_action_strength("down") - Input.get_action_strength("up")).normalized()
+	velocity = direction * speed
 	position += velocity
+	if Input.is_action_just_pressed("dash"):
+		dash()
+	
 	if Input.is_action_pressed("attack"):
 		shoot_in_mouse_direction()
 
@@ -33,5 +43,23 @@ func shoot_in_mouse_direction():
 		get_parent().add_child(bullet)
 
 
+func dash():
+	if not dashing and dash_enabled:
+		dashing = true
+		dash_enabled = false
+		speed = UPPER_SPEED
+		$DashTimer.start()
+		$DashCooldown.start()
+
+
 func _on_bullet_timer_timeout():
 	bullet_enabled = true
+
+
+func _on_dash_timer_timeout():
+	dashing = false
+	speed = LOWER_SPEED
+
+
+func _on_dash_cooldown_timeout():
+	dash_enabled = true

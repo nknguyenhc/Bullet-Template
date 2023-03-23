@@ -13,6 +13,10 @@ const DAMAGE_MAX_COUNT = 5
 
 var invincible = false
 
+const MAX_DISTANCE = 1000
+var chasing_player = false
+const SPEED = 2
+
 
 func _ready():
 	player = get_parent().get_node("Player")
@@ -20,7 +24,21 @@ func _ready():
 
 
 func _physics_process(delta):
-	pass
+	if player.position.x > position.x:
+		$AnimatedSprite2D.flip_h = true
+	else:
+		$AnimatedSprite2D.flip_h = false
+	
+	if chasing_player:
+		velocity = SPEED * (player.position - position).normalized()
+		position += velocity
+	else:
+		velocity = Vector2.ZERO
+	
+	if (player.position - position).length() > MAX_DISTANCE:
+		chasing_player = true
+	else:
+		chasing_player = false
 
 
 func take_damage(damage):
@@ -68,6 +86,16 @@ func shoot_homing():
 	get_parent().add_child(bullet)
 
 
+func shoot_all_directions():
+	var angle = 0 
+	while angle < 2 * PI:
+		var bullet = Bullet1.instantiate()
+		bullet.direction = Vector2(cos(angle), sin(angle))
+		bullet.position = position
+		get_parent().add_child(bullet)
+		angle += PI / 4
+
+
 func _on_start_timer_timeout():
 	$HomingBulletTimer.start()
 
@@ -94,3 +122,7 @@ func _on_animated_sprite_2d_animation_finished():
 func _on_invincibility_timer_timeout():
 	$AnimationPlayer.stop()
 	invincible = false
+
+
+func _on_all_direction_timer_timeout():
+	shoot_all_directions()
